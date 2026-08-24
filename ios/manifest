@@ -1,0 +1,19 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 1.1.0
+apiversion: 2
+architectures: arm64 x86_64
+mac: false
+description: Fades text in word/character by word/character as it streams/updates, using a per-word SwiftUI Layout (iOS 16+)
+author: Douglas Alves
+license: MIT
+copyright: Copyright (c) 2026 by Upflix Inc.
+
+# these should not be edited
+name: Ti.FancyLabel
+moduleid: ti.fancylabel
+guid: 05983a68-b4fb-4f8a-b5af-db0c7743db54
+platform: iphone
+minsdk: 13.2.0.GA

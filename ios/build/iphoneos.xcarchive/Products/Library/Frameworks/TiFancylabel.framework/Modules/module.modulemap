@@ -1,0 +1,10 @@
+framework module TiFancylabel {
+  umbrella header "TiFancylabel.h"
+  export *
+
+  module * { export * }
+}
+
+module TiFancylabel.Swift {
+  header "TiFancylabel-Swift.h"
+}
