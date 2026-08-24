@@ -9,12 +9,6 @@ A Titanium iOS module that gives you a single view, `Ti.FancyLabel.createLabel({
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Maintained](https://img.shields.io/badge/maintained-yes-brightgreen)
 
-<p align="center">
-  <img src="https://github.com/deckameron/Ti.FancyLabel/blob/main/assets/image.gif?raw=true"
-       width="300"
-       alt="video" />
-</p>
-
 ---
 
 ## Roadmap
@@ -32,6 +26,13 @@ A Titanium iOS module that gives you a single view, `Ti.FancyLabel.createLabel({
 - [ ] Retroactive Dynamic Type re-scale when toggling the property at runtime
 
 Contributions toward any of the unchecked items are very welcome — see [Contributing](#contributing).
+
+
+<p align="center">
+  <img src="https://github.com/deckameron/Ti.FancyLabel/blob/main/assets/image.gif?raw=true"
+       width="300"
+       alt="video" />
+</p>
 
 ## Features
 
