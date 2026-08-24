@@ -535,86 +535,86 @@
   },
   "ConstValues": [
     {
-      "filePath": "\/Users\/douglas\/Documents\/Modules\/TESTES\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
+      "filePath": "\/Users\/douglas\/Documents\/Modules\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
       "kind": "BooleanLiteral",
-      "offset": 6418,
+      "offset": 2379,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/douglas\/Documents\/Modules\/TESTES\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
+      "filePath": "\/Users\/douglas\/Documents\/Modules\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
       "kind": "BooleanLiteral",
-      "offset": 9933,
+      "offset": 4811,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/douglas\/Documents\/Modules\/TESTES\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
+      "filePath": "\/Users\/douglas\/Documents\/Modules\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
       "kind": "BooleanLiteral",
-      "offset": 9954,
+      "offset": 4832,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/douglas\/Documents\/Modules\/TESTES\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
+      "filePath": "\/Users\/douglas\/Documents\/Modules\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
       "kind": "BooleanLiteral",
-      "offset": 9973,
+      "offset": 4851,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/douglas\/Documents\/Modules\/TESTES\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
+      "filePath": "\/Users\/douglas\/Documents\/Modules\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
       "kind": "BooleanLiteral",
-      "offset": 10022,
+      "offset": 4900,
       "length": 5,
       "value": "false"
     },
     {
-      "filePath": "\/Users\/douglas\/Documents\/Modules\/TESTES\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
+      "filePath": "\/Users\/douglas\/Documents\/Modules\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
       "kind": "Array",
-      "offset": 11790,
+      "offset": 6547,
       "length": 2,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/douglas\/Documents\/Modules\/TESTES\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
+      "filePath": "\/Users\/douglas\/Documents\/Modules\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
       "kind": "IntegerLiteral",
-      "offset": 11820,
+      "offset": 6577,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/douglas\/Documents\/Modules\/TESTES\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
+      "filePath": "\/Users\/douglas\/Documents\/Modules\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
       "kind": "Array",
-      "offset": 11870,
+      "offset": 6627,
       "length": 2,
       "value": "[]"
     },
     {
-      "filePath": "\/Users\/douglas\/Documents\/Modules\/TESTES\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
+      "filePath": "\/Users\/douglas\/Documents\/Modules\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
       "kind": "StringLiteral",
-      "offset": 12333,
+      "offset": 7077,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "\/Users\/douglas\/Documents\/Modules\/TESTES\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
+      "filePath": "\/Users\/douglas\/Documents\/Modules\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
       "kind": "IntegerLiteral",
-      "offset": 12651,
+      "offset": 7395,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/douglas\/Documents\/Modules\/TESTES\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
+      "filePath": "\/Users\/douglas\/Documents\/Modules\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
       "kind": "IntegerLiteral",
-      "offset": 13381,
+      "offset": 8353,
       "length": 2,
       "value": "17"
     },
     {
-      "filePath": "\/Users\/douglas\/Documents\/Modules\/TESTES\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
+      "filePath": "\/Users\/douglas\/Documents\/Modules\/Ti.FancyLabel\/ios\/Classes\/TiFancylabelLabel.swift",
       "kind": "IntegerLiteral",
-      "offset": 23335,
+      "offset": 15640,
       "length": 2,
       "value": "17"
     }

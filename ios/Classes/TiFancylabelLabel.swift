@@ -167,7 +167,10 @@ public class TiFancylabelLabel: TiUIView {
   // continue the same left-to-right sweep exactly where the previous
   // chunk's left off, instead of restarting their stagger delay from 0
   // relative to "now" (which would let a fast-arriving chunk visibly jump
-  // ahead of text that hadn't finished appearing yet).
+  // ahead of text that hadn't finished appearing yet). Its lead over "now"
+  // is capped in scheduleReveals() - see that function's `maxLead`
+  // comment - so it can't drift arbitrarily far behind real time when the
+  // caller streams faster than the reveal can visually keep up.
   private var scheduleCursor: CFTimeInterval?
 
   // Read once at creation - see the "Known limitations" note in
@@ -714,20 +717,46 @@ public class TiFancylabelLabel: TiUIView {
     notifyContentsChanged()
   }
 
-  /// Immediately finishes any in-flight fade: every unit still waiting to
-  /// reveal jumps straight to fully opaque, with no animation - matches
-  /// "the app is backgrounding / the stream ended, stop mid-fade cleanly".
+  /// Finishes any in-flight fade. Whatever's still queued gets a quick
+  /// catch-up sweep of its own - each pending unit still gets its own
+  /// short fade, staggered by a small `catchUpStep`, rather than every
+  /// pending unit fading in at the exact same instant - matches "the app
+  /// is backgrounding / the stream ended, wrap it up now" without the
+  /// remaining text visibly popping into place as one synchronized block.
   func complete() {
     cancelPendingWork()
-    CATransaction.begin()
-    CATransaction.setDisableActions(true)
-    for unit in units where !unit.revealed {
-      unit.revealed = true
-      unit.layer?.removeAllAnimations()
-      unit.layer?.opacity = 1
-      unit.layer?.transform = CATransform3DIdentity
+    let pending = units.filter { !$0.revealed }
+    if !pending.isEmpty {
+      let style = animationStyle
+      // Capped well below `fadeDuration` so each catch-up fade reads as
+      // "wrapping up quickly", not as a second full-length reveal - but
+      // it's still a real, non-zero fade.
+      let quickFadeDuration = min(fadeDuration, 0.15)
+      // A tighter stagger than the normal reveal pace, so a queue of
+      // several pending units (see `scheduleReveals`'s `maxLead` comment
+      // for how one can build up here) still visibly sweeps in, just
+      // quickly, instead of every pending unit landing on the exact same
+      // frame.
+      // `unit.revealed` is flipped inside each work item, not here, so a
+      // second complete()/reset() call landing before this one's catch-up
+      // items have all fired still sees the right, up-to-date pending set
+      // - cancelPendingWork() (run at the top of either call) discards
+      // whichever of these haven't fired yet, and nothing is left
+      // permanently stuck at opacity 0.
+      let catchUpStep = max(staggerStep / 2, 0.005)
+      for (index, unit) in pending.enumerated() {
+        let delay = Double(index) * catchUpStep
+        let work = DispatchWorkItem { [weak unit] in
+          guard let unit = unit, let layer = unit.layer, !unit.revealed else { return }
+          unit.revealed = true
+          layer.opacity = 1
+          layer.transform = CATransform3DIdentity
+          layer.add(Self.buildRevealAnimation(style: style, fadeDuration: quickFadeDuration), forKey: "reveal")
+        }
+        pendingWork.append(work)
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)
+      }
     }
-    CATransaction.commit()
     scheduleCursor = nil
     notifyContentsChanged()
 
@@ -741,7 +770,38 @@ public class TiFancylabelLabel: TiUIView {
   private func scheduleReveals(for newUnits: [FancyLabelUnit], fadeDuration: Double, staggerStep: Double) {
     let style = animationStyle
     let now = CACurrentMediaTime()
-    var cursor = max(scheduleCursor ?? now, now)
+    // How far the reveal queue is allowed to run ahead of "now" before new
+    // units only push it out by a tiny amount instead of a full
+    // `staggerStep` (see `compressedStep` below). Without this cap,
+    // `scheduleCursor` keeps growing by `staggerStep` per unit on every
+    // call with no ceiling - fine when the caller's own call rate is
+    // slower than that growth (the cursor never gets far ahead of `now`
+    // to begin with), but when it's faster (e.g. a short polling
+    // interval feeding `granularity: "character"`, where several
+    // characters' worth of `staggerStep` can out-pace the interval
+    // itself), the queue backs up further and further behind real time
+    // with every call. That backlog isn't just a delay: if `complete()`
+    // runs while a lot of it is still pending, all of it used to jump to
+    // fully opaque in one instant, no-animation step - reading as the
+    // second half of a message "popping" into place all at once instead
+    // of continuing its sweep. Capping the lead keeps the backlog small
+    // and bounded regardless of how fast the caller streams, so
+    // `complete()` only ever has a short, barely-noticeable tail left to
+    // finish. `staggerStep * 8` is a rule-of-thumb "about one word's
+    // worth of stagger" - enough headroom for a normal burst (e.g. one
+    // `appendText()` call's worth of characters) to still sweep visibly,
+    // without letting multiple calls compound into an unbounded queue.
+    let maxLead = fadeDuration + staggerStep * 8
+    // Once the cap above is reached, still advance the cursor by this tiny
+    // amount per unit instead of freezing it in place - a hard freeze would
+    // give every unit past the cap the exact same delay, which is just a
+    // smaller version of the same "several units land on the same frame"
+    // problem this cap exists to avoid, not a fix for it. A 1ms step keeps
+    // every unit's reveal time distinct (still a visible, if fast, sweep)
+    // while keeping the lead's growth past `maxLead` small even across a
+    // very long burst.
+    let compressedStep = 0.001
+    var cursor = min(max(scheduleCursor ?? now, now), now + maxLead)
     for unit in newUnits {
       let delay = max(cursor - now, 0)
       let work = DispatchWorkItem { [weak unit] in
@@ -755,7 +815,7 @@ public class TiFancylabelLabel: TiUIView {
       }
       pendingWork.append(work)
       DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)
-      cursor += staggerStep
+      cursor += (cursor - now < maxLead) ? staggerStep : compressedStep
     }
     scheduleCursor = cursor
   }

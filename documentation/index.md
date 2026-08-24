@@ -270,7 +270,11 @@ If a previous chunk is still mid-fade when a new one arrives, it keeps
 fading on its own independent timer — nothing is cancelled or folded in
 early. New chunks queue onto the same left-to-right reveal sweep instead
 of restarting it, so fast streaming falls behind visually rather than
-skipping ahead of not-yet-revealed text.
+skipping ahead of not-yet-revealed text. That said, the sweep's lag behind
+real time is capped — streaming much faster than `fadeDelayStep` can
+visually keep up with (e.g. a short polling interval with
+`granularity: "character"`) compresses the reveal to a bounded, still-
+animated pace instead of letting an ever-growing backlog build up.
 
 With `markdown: true`, `chunk` is treated as raw Markdown source rather
 than literal text — see [Markdown support](#markdown-support) above.
@@ -289,9 +293,12 @@ a new streamed message on a reused label instance.
 
 ### `complete()`
 
-Immediately finishes any in-flight fade (folds the pending chunk in at
-full opacity, cancels the timer). Call this when your stream ends, so
-nothing is left visually half-faded if the app backgrounds mid-animation.
+Finishes any in-flight fade. Whatever's still queued gets its own quick
+catch-up fade, staggered by a small step, so a backlog of pending units
+sweeps in quickly rather than every one of them landing on the same
+frame — e.g. right after streaming much faster than the reveal could keep
+up with. Call this when your stream ends, so nothing is left visually
+half-faded if the app backgrounds mid-animation.
 
 ## Events
 
